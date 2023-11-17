@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pickle
 import json
+import os
 
 def IoU(boxA, boxB):
     xA = max(boxA[0], boxB[0])
@@ -41,16 +42,10 @@ def load_gt_data(json_file):
 
     return gt_data
 
-def main():
-    parser = argparse.ArgumentParser(description='Process some files.')
-    parser.add_argument('pkl_file', type=str, help='Path to the .pkl file')
-    parser.add_argument('json_file', type=str, help='Path to the .json file')
-    parser.add_argument('output_img_path', type=str, nargs='?', default='./reliability_diagram.png', help='Path for the output image')
-    args = parser.parse_args()
-
+def process_data(pkl_file, json_file, output_folder):
     # Load data
-    gt_data = load_gt_data(args.json_file)
-    with open(args.pkl_file, "rb") as f:
+    gt_data = load_gt_data(json_file)
+    with open(pkl_file, "rb") as f:
         results = pickle.load(f)
 
     # data processing
@@ -80,6 +75,17 @@ def main():
                 bin_correct_predictions[bin_index] += 1
 
     precision_values = bin_correct_predictions / np.maximum(bin_total_predictions, 1)
+
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+
+    output_text_path = os.path.join(output_folder, 'output.txt')
+
+    with open(output_text_path, 'w') as text_file:
+        for i, (low, high) in enumerate(zip(confidence_bins[:-1], confidence_bins[1:])):
+            output = f"Confidence Bin: [{low}, {high}): Total Predictions = {bin_total_predictions[i]}, Correct Predictions = {bin_correct_predictions[i]}, Precision = {precision_values[i]:.4f}\n"
+            print(output)
+            text_file.write(output + '-' * 40 + '\n')
 
     # plot reliability digram
     plt.figure(figsize=(10, 8))
@@ -112,7 +118,16 @@ def main():
     plt.xlim(0, 1)
     plt.ylim(0, 1)
     plt.tight_layout()
-    plt.savefig(args.output_img_path, dpi=300)
+    output_img_path = os.path.join(output_folder, 'reliability_diagram.png')
+    plt.savefig(output_img_path, dpi=300)
+
+def main():
+    parser = argparse.ArgumentParser(description='Process some files.')
+    parser.add_argument('pkl_file', type=str, help='Path to the .pkl file')
+    parser.add_argument('json_file', type=str, help='Path to the .json file')
+    parser.add_argument('output_folder', type=str, nargs='?', default='reliability_diagram_result',  help='Output folder for the files')
+    args = parser.parse_args()
+    process_data(args.pkl_file, args.json_file, args.output_folder)
 
 if __name__ == "__main__":
     main()
