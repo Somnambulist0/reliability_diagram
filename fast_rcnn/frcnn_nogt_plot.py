@@ -94,12 +94,12 @@ def process_data(pkl_file, json_file, output_folder):
 
     perfect_calibration_x = [0] + mid_points + [1]
     perfect_calibration_y = [0] + mid_points + [1]
-    plt.plot(perfect_calibration_x, perfect_calibration_y, linestyle='--', color='red', label='Perfect Calibration')
+    plt.plot(perfect_calibration_x, perfect_calibration_y, linestyle='--', color='red', label='Perfect')
 
-    plt.bar(0, 0, color='lightblue', label='Model Precision')
-    plt.bar(0, 0, color='lightsalmon', label='Exceeding Precision')
+    plt.bar(0, 0, color='lightblue', label='Below')
+    plt.bar(0, 0, color='lightsalmon', label='Above')
     plt.bar(0, 0, color='lightgray', label='Gap')
-    plt.legend()
+    plt.legend(fontsize=30)
 
     for i, mid_point in enumerate(mid_points):
         if mid_point > precision_values[i]:
@@ -112,9 +112,10 @@ def process_data(pkl_file, json_file, output_folder):
             plt.bar(mid_point, precision_values[i] - mid_point, bottom=mid_point, width=bar_width, color='lightsalmon',
                     align='center', edgecolor='black')
 
-    plt.xlabel('Confidence')
-    plt.ylabel('Precision')
-    plt.title('Reliability Diagram')
+    plt.xlabel('Confidence',fontsize=32)
+    plt.ylabel('Precision', fontsize=32)
+    plt.tick_params(axis='both', labelsize=30)
+    plt.title('Reliability Diagram', fontsize=36)
     plt.xlim(0, 1)
     plt.ylim(0, 1)
     plt.tight_layout()

@@ -26,8 +26,8 @@ python yolo_pc_plot.py  ./results_city.pkl  ./yolo_total
 python yolo_pc_class_plot.py  ./results_city.pkl  ./yolo_classes
 ```
 ---
-### Fast R-CNN:
-If you train the Fast R-CNN model through **mmdetection**, you may get the `.pkl file` which only includes prediected results and **no ground truth**. To solve this problem directly, we need both `.pkl file` and your `original annotation json file`, which you use to test the model. You need to set the `.pkl file` path `json file` path and `result dictionary` path (optional).
+### Faster R-CNN:
+If you train the Faster R-CNN model through **mmdetection**, you may get the `.pkl file` which only includes prediected results and **no ground truth**. To solve this problem directly, we need both `.pkl file` and your `original annotation json file`, which you use to test the model. You need to set the `.pkl file` path `json file` path and `result dictionary` path (optional).
 
 #### If you want to draw the general reliability (P-C) digarm :
 
@@ -61,7 +61,7 @@ python frcnn_nogt_plot_class.py  ./frcnn_city.pkl ./val.json ./fastrcnn_classes
 
 
 <details>
-  <summary><b>Fast R-CNN</b></summary>
+  <summary><b>Faster R-CNN</b></summary>
 
 * Download the results [here](https://drive.google.com/drive/folders/1-t0odqWutUshVfxE_WMWDCz5pPvVyrB8?usp=sharing). 
 

@@ -98,32 +98,33 @@ def process_results(results, confidence_bins, class_categories, output_folder):
         added_labels = set()
 
         for i, value in enumerate(precision_values):
-            label_below = 'Below Calibration' if 'Below Calibration' not in added_labels else ""
-            label_above = 'Above Calibration' if 'Above Calibration' not in added_labels else ""
+            label_below = 'Below' if 'Below' not in added_labels else ""
+            label_above = 'Above' if 'Above' not in added_labels else ""
             label_gap = 'Gap' if 'Gap' not in added_labels else ""
 
             if value >= mid_points[i]:
                 plt.bar(mid_points[i], mid_points[i], width=0.05, color='lightblue', align='center', edgecolor='black',
                         label=label_below)
-                added_labels.add('Below Calibration')
+                added_labels.add('Below')
 
                 plt.bar(mid_points[i], value - mid_points[i], width=0.05, bottom=mid_points[i], color='lightcoral',
                         align='center', edgecolor='black', label=label_above)
-                added_labels.add('Above Calibration')
+                added_labels.add('Above')
             else:
                 plt.bar(mid_points[i], value, width=0.05, color='lightblue', align='center', edgecolor='black',
                         label=label_below)
-                added_labels.add('Below Calibration')
+                added_labels.add('Below')
 
                 plt.bar(mid_points[i], mid_points[i] - value, width=0.05, bottom=value, color='lightgray', align='center',
                         edgecolor='black', label=label_gap)
                 added_labels.add('Gap')
 
-        plt.plot([0] + mid_points + [1], [0] + mid_points + [1], linestyle='--', color='red', label='Perfect Calibration')
-        plt.legend()
-        plt.xlabel('Confidence')
-        plt.ylabel('Precision')
-        plt.title(f'Reliability Diagram for {label_to_name[category]}')
+        plt.plot([0] + mid_points + [1], [0] + mid_points + [1], linestyle='--', color='red', label='Perfect')
+        plt.legend(fontsize=30)
+        plt.xlabel('Confidence', fontsize=32)
+        plt.ylabel('Precision', fontsize=32)
+        plt.tick_params(axis='both', labelsize=30)
+        plt.title(f'Reliability Diagram for {label_to_name[category]}', fontsize=36)
         plt.savefig(os.path.join(output_folder, f'reliability_diagram_{label_to_name[category]}.png'), dpi=300)
         plt.clf()
 
